@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 
-const dbconfig = 'mongodb+srv://juliusromanzeira:Tarcizinho1@cluster0.otw4je2.mongodb.net/cadastros?retryWrites=true&w=majority&appName=Cluster0';
+const dbconfig = 'mongodb+srv://arco:arco@cluster0.kj0yg0n.mongodb.net/cadastro?retryWrites=true&w=majority&appName=Cluster0';
 
 const connection = mongoose.connect(dbconfig, {
     useNewURLParser: true,
