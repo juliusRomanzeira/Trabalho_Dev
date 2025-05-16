@@ -1,15 +1,17 @@
 import React, { useState } from 'react';
 import './CadastroFuncionario.css'; // Importa o CSS
+import api from '../services/api'; // Importa o arquivo api.js
 
 function CadastroFuncionario() {
   const [nome, setNome] = useState('');
   const [senha, setSenha] = useState('');
   const [confirmarSenha, setConfirmarSenha] = useState('');
   const [idContrato, setIdContrato] = useState('');
+  const [priority, setPriority] = useState(false);
 
-  const handleSubmit = (e) => {
+  async function handleSubmit(e) {
     e.preventDefault();
-
+    
     if (senha.length < 6) {
       alert('A senha deve ter mais de 6 dígitos!');
       return;
@@ -44,11 +46,16 @@ function CadastroFuncionario() {
 
       if (idContrato !== '' && senha === confirmarSenha && senha.length >= 6 && nomeValido) {
         setSenha(senha);
+        const response = await api.post('/cadastro', {
+          nome: nomeFormatado,
+          senha: senha,
+          idContrato: idContrato,
+          priority: priority
+        });
         console.log('Cadastro enviado:', { nome: nomeFormatado, senha, idContrato });
         alert(`Cadastro realizado com sucesso! Bem-vindo`);
       }
     }
-
   };
 
   return (
@@ -63,6 +70,12 @@ function CadastroFuncionario() {
               return;
             }
             handleSubmit(e);
+            // Limpa os campos após o cadastro
+            setNome('');
+            setSenha('');
+            setConfirmarSenha('');
+            setIdContrato('');
+            setPriority(false);
           }}
         >
           <label htmlFor="nome">Nome Completo:</label>
@@ -103,7 +116,10 @@ function CadastroFuncionario() {
                 cursor: 'pointer',
                 transition: 'background-color 0.2s'
               }}
-              onClick={() => setIdContrato(idContrato === '1' ? '' : '1')}
+              onClick={() => {
+                setIdContrato(idContrato === '1' ? '' : '1');
+                setPriority(priority === true ? false : true);
+              }}
             >
               Presidência
             </button>
